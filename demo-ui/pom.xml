@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<project
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>avicit.platform6</groupId>
+        <artifactId>demo</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <groupId>avicit.platform6</groupId>
+    <artifactId>demo-ui</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>demo-ui</name>
+    <url>http://maven.apache.org</url>
+
+    <dependencies>
+        <!-- avicit基础依赖 -->
+        <dependency>
+            <groupId>avicit.platform6</groupId>
+            <artifactId>avicit-platform6-boot-starter-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>avicit.platform6</groupId>
+            <artifactId>demo-api</artifactId>
+            <version>${component.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>avicit.platform6</groupId>
+            <artifactId>demo-pub</artifactId>
+            <version>${component.version}</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <attachClasses>true</attachClasses>
+                    <archiveClasses>true</archiveClasses>
+                    <packagingExcludes>WEB-INF/classes/**/**,WEB-INF/lib/**/**</packagingExcludes>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <targetPath>META-INF/resources</targetPath>
+                <includes>
+                    <include>**/**</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/**</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>
+

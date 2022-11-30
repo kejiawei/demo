@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="avicit.demo.stockinfo.dao.StockInfoDAO">
+
+    <resultMap id="StockInfoDTOMap" type="avicit.demo.stockinfo.dto.StockInfoDTO">
+        <result property="id" column="ID" jdbcType="VARCHAR" />
+        <result property="createdBy" column="CREATED_BY" jdbcType="VARCHAR" />
+        <result property="creationDate" column="CREATION_DATE" jdbcType="TIMESTAMP" />
+        <result property="lastUpdatedBy" column="LAST_UPDATED_BY" jdbcType="VARCHAR" />
+        <result property="lastUpdateDate" column="LAST_UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="lastUpdateIp" column="LAST_UPDATE_IP" jdbcType="VARCHAR" />
+        <result property="version" column="VERSION" jdbcType="DECIMAL" />
+        <result property="createdDept" column="CREATED_DEPT" jdbcType="VARCHAR" />
+        <result property="orgIdentity" column="ORG_IDENTITY" jdbcType="VARCHAR" />
+        <result property="name" column="NAME" jdbcType="VARCHAR" />
+        <result property="cnCode" column="CN_CODE" jdbcType="VARCHAR" />
+        <result property="storageNumber" column="STORAGE_NUMBER" jdbcType="DECIMAL" />
+        <result property="remark" column="REMARK" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="commonColums">
+        <trim suffixOverrides=",">
+        t1.ID,
+        t1.CREATED_BY,
+        t1.CREATION_DATE,
+        t1.LAST_UPDATED_BY,
+        t1.LAST_UPDATE_DATE,
+        t1.LAST_UPDATE_IP,
+        t1.VERSION,
+        t1.CREATED_DEPT,
+        t1.ORG_IDENTITY,
+        t1.NAME,
+        t1.CN_CODE,
+        t1.STORAGE_NUMBER,
+        t1.REMARK,
+        </trim>
+    </sql>
+
+    <sql id="commonWhereAnd">
+        <if test="bean.id != null and bean.id != ''">
+            and t1.ID = #{bean.id}
+        </if>
+        <if test="bean.createdBy != null and bean.createdBy != ''">
+            and t1.CREATED_BY = #{bean.createdBy}
+        </if>
+        <if test="bean.creationDateBegin != null">
+            and t1.CREATION_DATE &gt;= #{bean.creationDateBegin}
+        </if>
+        <if test="bean.creationDateEnd != null">
+            and t1.CREATION_DATE &lt;= #{bean.creationDateEnd}
+        </if>
+        <if test="bean.lastUpdatedBy != null and bean.lastUpdatedBy != ''">
+            and t1.LAST_UPDATED_BY = #{bean.lastUpdatedBy}
+        </if>
+        <if test="bean.lastUpdateDateBegin != null">
+            and t1.LAST_UPDATE_DATE &gt;= #{bean.lastUpdateDateBegin}
+        </if>
+        <if test="bean.lastUpdateDateEnd != null">
+            and t1.LAST_UPDATE_DATE &lt;= #{bean.lastUpdateDateEnd}
+        </if>
+        <if test="bean.lastUpdateIp != null and bean.lastUpdateIp != ''">
+            and t1.LAST_UPDATE_IP = #{bean.lastUpdateIp}
+        </if>
+        <if test="bean.version != null ">
+            and t1.VERSION = #{bean.version}
+        </if>
+        <if test="bean.createdDept != null and bean.createdDept != ''">
+            and t1.CREATED_DEPT = #{bean.createdDept}
+        </if>
+        <if test="bean.name != null and bean.name != ''">
+            and t1.NAME = #{bean.name}
+        </if>
+        <if test="bean.cnCode != null and bean.cnCode != ''">
+            and t1.CN_CODE = #{bean.cnCode}
+        </if>
+        <if test="bean.storageNumber != null ">
+            and t1.STORAGE_NUMBER = #{bean.storageNumber}
+        </if>
+        <if test="bean.remark != null and bean.remark != ''">
+            and t1.REMARK = #{bean.remark}
+        </if>
+    </sql>
+
+    <sql id="commonWhereOr">
+        <trim prefix="(" suffix=")" prefixOverrides="or">
+        <if test="bean.id != null and bean.id != ''">
+            or t1.ID = #{bean.id}
+        </if>
+        <if test="bean.createdBy != null and bean.createdBy != ''">
+            or t1.CREATED_BY = #{bean.createdBy}
+        </if>
+        <if test="bean.creationDateBegin != null">
+            or t1.CREATION_DATE &gt;= #{bean.creationDateBegin}
+        </if>
+        <if test="bean.creationDateEnd != null">
+            or t1.CREATION_DATE &lt;= #{bean.creationDateEnd}
+        </if>
+        <if test="bean.lastUpdatedBy != null and bean.lastUpdatedBy != ''">
+            or t1.LAST_UPDATED_BY = #{bean.lastUpdatedBy}
+        </if>
+        <if test="bean.lastUpdateDateBegin != null">
+            or t1.LAST_UPDATE_DATE &gt;= #{bean.lastUpdateDateBegin}
+        </if>
+        <if test="bean.lastUpdateDateEnd != null">
+            or t1.LAST_UPDATE_DATE &lt;= #{bean.lastUpdateDateEnd}
+        </if>
+        <if test="bean.lastUpdateIp != null and bean.lastUpdateIp != ''">
+            or t1.LAST_UPDATE_IP = #{bean.lastUpdateIp}
+        </if>
+        <if test="bean.version != null and bean.version != ''">
+            or t1.VERSION = #{bean.version}
+        </if>
+        <if test="bean.createdDept != null and bean.createdDept != ''">
+            or t1.CREATED_DEPT = #{bean.createdDept}
+        </if>
+        <if test="bean.name != null and bean.name != ''">
+            or t1.NAME = #{bean.name}
+        </if>
+        <if test="bean.cnCode != null and bean.cnCode != ''">
+            or t1.CN_CODE = #{bean.cnCode}
+        </if>
+        <if test="bean.storageNumber != null and bean.storageNumber != ''">
+            or t1.STORAGE_NUMBER = #{bean.storageNumber}
+        </if>
+        <if test="bean.remark != null and bean.remark != ''">
+            or t1.REMARK = #{bean.remark}
+        </if>
+</trim>
+</sql>
+
+    <!-- 默认查询条件 -->
+    <sql id="defaultWhereAnd">
+        <if test="orgIdentity != null and orgIdentity != ''">
+            and t1.org_identity = #{orgIdentity}
+        </if>
+    </sql>
+
+    <sql id="commonOrderBy">
+        <choose>
+            <when test="pOrderBy != null and pOrderBy != ''">
+                order by ${pOrderBy}
+            </when>
+            <otherwise>
+                order by t1.creation_date desc
+            </otherwise>
+        </choose>
+    </sql>
+
+    <!-- 分页查询  STOCK_INFO -->
+    <select id="searchStockInfoByPage" parameterType="java.util.Map" resultMap="StockInfoDTOMap">
+        select
+        <include refid="commonColums"/>
+        from STOCK_INFO t1
+        <where>
+            <if test="bean != null">
+                <choose>
+                    <when test="keyWords != null and keyWords != '' ">
+                        <include refid="commonWhereOr"/>
+                    </when>
+                    <otherwise>
+                        <include refid="commonWhereAnd"/>
+                    </otherwise>
+                </choose>
+            </if>
+            <include refid="defaultWhereAnd"/>
+        </where>
+        <include refid="commonOrderBy"></include>
+    </select>
+
+    <!-- 查询列表 STOCK_INFO -->
+    <select id="searchStockInfo" parameterType="java.util.Map" resultMap="StockInfoDTOMap">
+        select
+        <include refid="commonColums"/>
+        from STOCK_INFO t1
+        <where>
+            <if test="bean != null">
+                <include refid="commonWhereAnd"/>
+            </if>
+        </where>
+    </select>
+
+    <!-- 主键查询对象 STOCK_INFO -->
+    <select id="findStockInfoById" parameterType="java.util.Map" resultMap="StockInfoDTOMap">
+        select
+        <include refid="commonColums"/>
+        from STOCK_INFO t1
+        where t1.id = #{id}
+    </select>
+
+    <!-- 新增对象 STOCK_INFO -->
+    <insert id="insertStockInfo" parameterType="avicit.demo.stockinfo.dto.StockInfoDTO">
+        insert into STOCK_INFO
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="creationDate != null">
+                CREATION_DATE,
+            </if>
+            <if test="lastUpdatedBy != null">
+                LAST_UPDATED_BY,
+            </if>
+            <if test="lastUpdateDate != null">
+                LAST_UPDATE_DATE,
+            </if>
+            <if test="lastUpdateIp != null">
+                LAST_UPDATE_IP,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+            <if test="createdDept != null">
+                CREATED_DEPT,
+            </if>
+            <if test="orgIdentity != null">
+                ORG_IDENTITY,
+            </if>
+            <if test="name != null">
+                NAME,
+            </if>
+            <if test="cnCode != null">
+                CN_CODE,
+            </if>
+            <if test="storageNumber != null">
+                STORAGE_NUMBER,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType = VARCHAR},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType = VARCHAR},
+            </if>
+            <if test="creationDate != null">
+                #{creationDate,jdbcType = TIMESTAMP},
+            </if>
+            <if test="lastUpdatedBy != null">
+                #{lastUpdatedBy,jdbcType = VARCHAR},
+            </if>
+            <if test="lastUpdateDate != null">
+                #{lastUpdateDate,jdbcType = TIMESTAMP},
+            </if>
+            <if test="lastUpdateIp != null">
+                #{lastUpdateIp,jdbcType = VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType = DECIMAL},
+            </if>
+            <if test="createdDept != null">
+                #{createdDept,jdbcType = VARCHAR},
+            </if>
+            <if test="orgIdentity != null">
+                #{orgIdentity,jdbcType = VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType = VARCHAR},
+            </if>
+            <if test="cnCode != null">
+                #{cnCode,jdbcType = VARCHAR},
+            </if>
+            <if test="storageNumber != null">
+                #{storageNumber,jdbcType = DECIMAL},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType = VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 批量新增对象 STOCK_INFO -->
+    <insert id="insertStockInfoList" parameterType="java.util.List">
+        insert into STOCK_INFO(
+            ID ,
+            CREATED_BY ,
+            CREATION_DATE ,
+            LAST_UPDATED_BY ,
+            LAST_UPDATE_DATE ,
+            LAST_UPDATE_IP ,
+            VERSION ,
+            CREATED_DEPT ,
+            ORG_IDENTITY ,
+            NAME ,
+            CN_CODE ,
+            STORAGE_NUMBER ,
+            REMARK         )
+        <foreach collection="dtoList" item="item" index="index" open="(" separator="union all" close=")">
+            select
+                #{item.id,jdbcType = VARCHAR} ,
+                #{item.createdBy,jdbcType = VARCHAR} ,
+                #{item.creationDate,jdbcType = TIMESTAMP} ,
+                #{item.lastUpdatedBy,jdbcType = VARCHAR} ,
+                #{item.lastUpdateDate,jdbcType = TIMESTAMP} ,
+                #{item.lastUpdateIp,jdbcType = VARCHAR} ,
+                #{item.version,jdbcType = DECIMAL} ,
+                #{item.createdDept,jdbcType = VARCHAR} ,
+                #{item.orgIdentity,jdbcType = VARCHAR} ,
+                #{item.name,jdbcType = VARCHAR} ,
+                #{item.cnCode,jdbcType = VARCHAR} ,
+                #{item.storageNumber,jdbcType = DECIMAL} ,
+                #{item.remark,jdbcType = VARCHAR}             from dual
+        </foreach>
+    </insert>
+
+    <!-- 更新对象 STOCK_INFO -->
+    <update id="updateStockInfoSensitive" parameterType="avicit.demo.stockinfo.dto.StockInfoDTO">
+        update STOCK_INFO
+        <set>
+            <if test="id != null">
+                ID = #{id,jdbcType = VARCHAR} ,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy,jdbcType = VARCHAR} ,
+            </if>
+            <if test="creationDate != null">
+                CREATION_DATE = #{creationDate,jdbcType = TIMESTAMP} ,
+            </if>
+            <if test="lastUpdatedBy != null">
+                LAST_UPDATED_BY = #{lastUpdatedBy,jdbcType = VARCHAR} ,
+            </if>
+            <if test="lastUpdateDate != null">
+                LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType = TIMESTAMP} ,
+            </if>
+            <if test="lastUpdateIp != null">
+                LAST_UPDATE_IP = #{lastUpdateIp,jdbcType = VARCHAR} ,
+            </if>
+            <if test="version != null">
+VERSION = version+1 ,
+            </if>
+            <if test="createdDept != null">
+                CREATED_DEPT = #{createdDept,jdbcType = VARCHAR} ,
+            </if>
+            <if test="orgIdentity != null">
+                ORG_IDENTITY = #{orgIdentity,jdbcType = VARCHAR} ,
+            </if>
+            <if test="name != null">
+                NAME = #{name,jdbcType = VARCHAR} ,
+            </if>
+            <if test="cnCode != null">
+                CN_CODE = #{cnCode,jdbcType = VARCHAR} ,
+            </if>
+            <if test="storageNumber != null">
+                STORAGE_NUMBER = #{storageNumber,jdbcType = DECIMAL} ,
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType = VARCHAR}             </if>
+        </set>
+        where id = #{id}
+        and version = #{version}
+    </update>
+
+    <!-- 更新对象 STOCK_INFO -->
+    <update id="updateStockInfoAll" parameterType="avicit.demo.stockinfo.dto.StockInfoDTO">
+        update STOCK_INFO
+        set
+                ID = #{id,jdbcType = VARCHAR} ,
+                CREATED_BY = #{createdBy,jdbcType = VARCHAR} ,
+                CREATION_DATE = #{creationDate,jdbcType = TIMESTAMP} ,
+                LAST_UPDATED_BY = #{lastUpdatedBy,jdbcType = VARCHAR} ,
+                LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType = TIMESTAMP} ,
+                LAST_UPDATE_IP = #{lastUpdateIp,jdbcType = VARCHAR} ,
+                VERSION = version+1 ,
+                CREATED_DEPT = #{createdDept,jdbcType = VARCHAR} ,
+                ORG_IDENTITY = #{orgIdentity,jdbcType = VARCHAR} ,
+                NAME = #{name,jdbcType = VARCHAR} ,
+                CN_CODE = #{cnCode,jdbcType = VARCHAR} ,
+                STORAGE_NUMBER = #{storageNumber,jdbcType = DECIMAL} ,
+                REMARK = #{remark,jdbcType = VARCHAR}         where id = #{id}
+        and version = #{version}
+    </update>
+
+    <!-- 批量更新对象   STOCK_INFO -->
+    <update id="updateStockInfoList" parameterType="java.util.List">
+        <foreach collection="dtoList" item="item" index="index" open="begin" separator=";" close=";end;">
+            update STOCK_INFO
+            set
+            ID = #{item.id,jdbcType = VARCHAR} ,
+            CREATED_BY = #{item.createdBy,jdbcType = VARCHAR} ,
+            CREATION_DATE = #{item.creationDate,jdbcType = TIMESTAMP} ,
+            LAST_UPDATED_BY = #{item.lastUpdatedBy,jdbcType = VARCHAR} ,
+            LAST_UPDATE_DATE = #{item.lastUpdateDate,jdbcType = TIMESTAMP} ,
+            LAST_UPDATE_IP = #{item.lastUpdateIp,jdbcType = VARCHAR} ,
+            VERSION = version+1  ,
+            CREATED_DEPT = #{item.createdDept,jdbcType = VARCHAR} ,
+            ORG_IDENTITY = #{item.orgIdentity,jdbcType = VARCHAR} ,
+            NAME = #{item.name,jdbcType = VARCHAR} ,
+            CN_CODE = #{item.cnCode,jdbcType = VARCHAR} ,
+            STORAGE_NUMBER = #{item.storageNumber,jdbcType = DECIMAL} ,
+            REMARK = #{item.remark,jdbcType = VARCHAR}             where id = #{item.id}
+            and version = #{version}
+        </foreach>
+    </update>
+
+    <!-- 主键删除 STOCK_INFO -->
+    <delete id="deleteStockInfoById" parameterType="java.lang.String">
+        delete from STOCK_INFO where id = #{id}
+    </delete>
+</mapper>
+

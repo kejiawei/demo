@@ -1,0 +1,58 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDRESS:127.0.0.1:8848}
+        port: ${server.port}
+        service: ${spring.application.name}
+        metadata:
+          cn-name: ${spring.application.cn-name}
+          organization: ${NACOS_ORGANIZATION:platform6}
+          permission-type: public
+        namespace: ${NACOS_NAMESPACE:public}
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: ${ZIPKIN_ADDRESS:http://127.0.0.1:9411}
+    service:
+      name: ${spring.application.cn-name}
+  http-client:
+    max-total: 200
+  http-request-factory:
+    connect-timeout: 100000
+    connection-request-timeout: 100000
+    read-timeout: 100000
+  boot:
+    admin:
+      client:
+        url: ${SPRING_BOOT_ADMIN_ADDRESS:http://127.0.0.1:8081}
+        instance:
+          service-url: http://10.216.50.201:32501
+          name: ${spring.application.name}
+          metadata:
+            cn-name: ${spring.application.cn-name}
+            nacos-url: ${spring.cloud.nacos.discovery.server-addr}
+            zipkin-url: ${spring.zipkin.base-url}
+            zookeeper-url: ${platform.traefik.zookeeper.address}
+  logstash:
+    address: ${LOGSTASH_ADDRESS:127.0.0.1:5044}
+  # 数据源配置
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:v6r4
+    username: pt6_msystem
+    # 使用 ENC() 指定加密字符串 或者 直接使用明文
+    # password: cape
+    password: ENC(7SGIwMBNlMc=)
+
+#ribbon
+ribbon:
+  ConnectTimeout: 30000
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 10
+  OkToRetryOnAllOperations: true
+  ReadTimeout: 60000
+  eureka:
+    enabled: true
+

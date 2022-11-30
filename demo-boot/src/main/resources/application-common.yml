@@ -1,0 +1,165 @@
+server:
+  servlet:
+    jsp:
+      init-parameters:
+        development: true
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  http-client:
+    max-total: 500
+  http-request-factory:
+    connect-timeout: 100000
+    connection-request-timeout: 100000
+    read-timeout: 100000
+  main:
+    allow-bean-definition-overriding: true
+  #Redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    # 使用 ENC() 指定加密字符串 或者 直接使用明文
+    password: avicit
+    #password: ENC(7Utfyh4acSM=)
+    database: 0
+    timeout: 2000
+    jedis:
+      pool:
+        max-active: 500
+        max-idle: 200
+        min-idle: 10
+        max-wait: 10000
+  # 数据源配置
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    # HikariCP连接池配置
+    hikari:
+      # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      # 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 20000
+      # 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 600000
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      # 连接池最大连接数，默认是10
+      maximum-pool-size: 30
+      # 最小空闲连接数量，默认值10
+      minimum-idle: 10
+      # 连接池名称
+      # pool-name: MyHikariCP
+      # 用于测试连接是否可用的查询语句
+      # connection-test-query: SELECT 1
+  # spring jpa 配置 (hibernate配置)
+  jpa:
+    properties:
+      hibernate:
+        show-sql: false
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+        order_inserts: true
+        order_updates: true
+        generate_statistics: false
+        use_sql_comments: false
+        jdbc:
+          batch_size: 15
+          batch_versioned_data: true
+
+avicit:
+  application:
+    isServer: true
+    # 启用oauth2鉴权，生产环境需开启
+    auth-enabled: true
+  rest:
+    # 服务授权clientId
+    clientId: 13e73834-78a9-4a73-a1fb-2ef55118d830
+    # 服务授权clientSecret
+    clientSecret: 8OfTtJyeRausXWRgfmmLGQ
+    # 服务授权地址
+    authHost: https://127.0.0.1:6884
+    restConfig:
+      system:
+        host: http://127.0.0.1:10001
+      bpm:
+        host: http://127.0.0.1:10001
+      syslog:
+        host: http://127.0.0.1:10001
+      oss:
+        host: http://127.0.0.1:10001
+#fastdfs配置信息
+platform:
+  oss:
+    huawei:
+      endPoint: https://obs.cn-north-4.myhuaweicloud.com
+      bucketName: pt-attachment
+      accessKey: ABCDETLYTQYXDFSJAVPZTXWXYZ
+      secretKey: abc0OM7EQqJfxk5X9djICU7JADq97XUcQM7OW9KIzQXYZ
+      socketTimeout: 30000
+      connectionTimeout: 10000
+    #fastdfs配置
+    fastdfs:
+      connect_timeout: 5
+      network_timeout: 20
+      charset: UTF-8
+      http_tracker_http_port: 8080
+      http_anti_steal_token: no
+      http_secret_key: FastDFS1234567890
+      tracker_server: 111.229.130.226:22122
+  unableModify:
+    system:
+      sysRole: platform_manager,system_manager,safety_auditor,safety_manager,comm_user
+
+syslog:
+  insert: true
+  update: true
+  select: true
+  delete: true
+  login: true
+  logout: true
+
+sany:
+  platform_manager:
+    - module_operate
+    - safety_audit
+    - safety_manage
+    - system_manage
+  system_manager:
+    - none
+  safety_manager:
+    - module_operate
+    - safety_audit
+  safety_auditor:
+    - safety_manage
+    - system_manage
+  sys_roles:
+    - platform_manager
+    - system_manager
+    - safety_auditor
+    - safety_manager
+    - comm_user
+
+#LOG
+logging:
+  level:
+    avicit: info
+
+#ribbon
+ribbon:
+  ConnectTimeout: 30000
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 10
+  OkToRetryOnAllOperations: true
+  ReadTimeout: 60000
+  eureka:
+    enabled: true
+
+# 配置mapper的扫描,找到所有的mapper.xml映射文件
+mybatis:
+  mapperLocations: classpath*:avicit/**/dao/*Mapper.xml
+
+# PageHelper分页插件
+pagehelper:
+  reasonable: true
+  #处理多数据源为不同数据库
+  autoRuntimeDialect: true
+

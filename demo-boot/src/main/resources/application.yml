@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    include:
+      - common
+    active:
+      - ${profiles.active}
+
+  application:
+    name: demo
+    cn-name: demo
+
+avicit:
+  application:
+    application-id: 1

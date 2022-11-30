@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<project
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>avicit.platform6</groupId>
+        <artifactId>demo</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>demo-boot</artifactId>
+    <description>组件的后台服务启动工程</description>
+
+    <name>demo-boot</name>
+    <url>http://maven.apache.org</url>
+
+    <profiles>
+        <!-- 开发环境配置 -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+
+            <!-- 默认激活该配置 -->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <resources>
+                    <!-- 复制logback-spring.xml-->
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>false</filtering>
+                        <includes>
+                            <include>logback-spring.xml</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <!-- 微服务环境配置 -->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
+            <dependencies>
+                <!-- 微服务 -->
+                <dependency>
+                    <groupId>avicit.platform6</groupId>
+                    <artifactId>avicit-platform6-service-starter</artifactId>
+                    <version>${prod.version}</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <resources>
+                    <!-- 复制prod下的logback-spring.xml-->
+                    <resource>
+                        <directory>src/main/resources/${profiles.active}</directory>
+                        <filtering>false</filtering>
+                    </resource>
+                    <!-- 复制bootstrap.yml-->
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>false</filtering>
+                        <includes>
+                            <include>bootstrap.yml</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <!-- 华为云环境配置 -->
+        <profile>
+            <id>huawei</id>
+            <properties>
+                <profiles.active>huawei</profiles.active>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>avicit.platform6</groupId>
+                    <artifactId>avicit-platform6-huawei-starter</artifactId>
+                    <version>${huawei.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>avicit.platform6</groupId>
+                            <artifactId>avicit-platform6-restclient-enhance-starter</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+            </dependencies>
+            <build>
+                <resources>
+                    <!-- 复制logback-spring.xml-->
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>false</filtering>
+                        <includes>
+                            <include>logback-spring.xml</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <!-- 阿里云配置环境配置 -->
+        <profile>
+            <id>ali</id>
+            <properties>
+                <profiles.active>ali</profiles.active>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>avicit.platform6</groupId>
+                    <artifactId>avicit-platform6-alibaba-starter</artifactId>
+                    <version>${ali.version}</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <resources>
+                    <!-- 复制logback-spring.xml和bootstrap.yml-->
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>false</filtering>
+                        <includes>
+                            <include>logback-spring.xml</include>
+                            <include>bootstrap.yml</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <!-- 腾讯云环境配置 -->
+        <profile>
+            <id>tencent</id>
+            <properties>
+                <profiles.active>tencent</profiles.active>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>avicit.platform6</groupId>
+                    <artifactId>avicit-platform6-tencent-starter</artifactId>
+                    <version>${tencent.version}</version>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <resources>
+                    <!-- 复制logback-spring.xml和bootstrap.yml-->
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>false</filtering>
+                        <includes>
+                            <include>logback-spring.xml</include>
+                            <include>bootstrap.yml</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
+
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>avicit.platform6</groupId>
+            <artifactId>demo-service</artifactId>
+            <version>${component.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>avicit.platform6</groupId>
+            <artifactId>avicit-platform6-boot-starter-service</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>utf-8</encoding>
+                    <useDefaultDelimiters>true</useDefaultDelimiters>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>lrc</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>res</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>application-${profiles.active}.yml</include>
+                    <include>application-common.yml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>logback-spring.xml</exclude>
+                    <exclude>bootstrap.yml</exclude>
+                    <exclude>application*.yml</exclude>
+                    <exclude>prod/*</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>application.yml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+
+        </resources>
+
+    </build>
+</project>
+

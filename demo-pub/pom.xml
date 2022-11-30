@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<project
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>avicit.platform6</groupId>
+        <artifactId>demo</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>demo-pub</artifactId>
+    <description>组件的公共项目，包括组件的DTO等资源</description>
+
+    <name>demo-pub</name>
+    <url>http://maven.apache.org</url>
+
+    <dependencies>
+        <!-- avicit基础依赖 -->
+        <dependency>
+            <groupId>avicit.platform6</groupId>
+            <artifactId>avicit-platform6-boot-starter-pub</artifactId>
+        </dependency>
+    </dependencies>
+</project>
+

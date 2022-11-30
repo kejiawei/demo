@@ -1,0 +1,12 @@
+# 服务配置
+server:
+  port: 10008
+# Spring配置
+spring:
+  # 数据源配置
+  datasource:
+    #oracle
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@127.0.0.1:1521:V641
+    username: stock
+    password: cape
