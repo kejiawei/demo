@@ -35,7 +35,7 @@ public class StockInfoApi {
 
 	/**
 	* 按条件分页查询
-	*
+	* 123
 	* @param queryReqBean 查询条件
 	* @return QueryRespBean<StockInfoDTO>
 	*/
